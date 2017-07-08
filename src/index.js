@@ -9,6 +9,7 @@
  * @property {string} libraryName
  * @property {string} libraryDirectory
  * @property {string} libraryStrategy - camel2camel, camel2dash, camel2underline
+ * @property {string|boolean} libraryOverride - replace module name in rare condition, like lodash within jest while lodash-es within rollup
  * @property {string|boolean} style
  */
 
@@ -27,6 +28,7 @@ const Radar = require('./radar');
 const DefaultOptions = {
   libraryDirectory: 'lib',
   libraryStrategy: 'camel2camel',
+  libraryOverride: false,
   style: false
 };
 
@@ -39,7 +41,7 @@ module.exports = function () {
          * @param {ShakingImportOptions} state
          */
         enter(path, state) {
-          const optsList = _.isObject(state.opts) ? [state.opts] : state.opts;
+          const optsList = _.isPlainObject(state.opts) ? [state.opts] : state.opts;
 
           optsList.forEach((opts) => assert(opts.libraryName, 'libraryName should be provided'));
 
@@ -69,7 +71,8 @@ function takeShakingImport(path, opts) {
     Reflect.get(Strategy, _.first(PresetStrategy));
 
   specifiers.forEach((specifier) => {
-    let destinationPath = nativePath.join(opts.libraryName, opts.libraryDirectory, libraryStrategyImplement(specifier.imported.name));
+    let libraryName = (opts.libraryOverride && _.isString(opts.libraryOverride)) ? opts.libraryOverride : opts.libraryName;
+    let destinationPath = nativePath.join(libraryName, opts.libraryDirectory, libraryStrategyImplement(specifier.imported.name));
     let declaration = types.importDeclaration(
       [types.importDefaultSpecifier(specifier.local)],
       types.stringLiteral(destinationPath)

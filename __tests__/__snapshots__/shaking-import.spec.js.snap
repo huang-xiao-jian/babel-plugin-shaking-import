@@ -14,6 +14,22 @@ _.dropWhile([1, 2, 3, 4], function (value) {
 });"
 `;
 
+exports[`babel-plugin-shaking-import should support adaptor libraryStrategy 1`] = `
+"'use strict';
+
+import forEachRight from 'lodash/forEachRight';
+import dropWhile from 'lodash/dropWhile';
+
+
+forEachRight([1, 2], function (value) {
+  console.log(value);
+});
+
+dropWhile([1, 2, 3, 4], function (value) {
+  return value <= 3;
+});"
+`;
+
 exports[`babel-plugin-shaking-import should support antd camel2dash style cases 1`] = `
 "'use strict';
 
@@ -97,6 +113,73 @@ ReactDOM.render(React.createElement(
   null,
   React.createElement(TimePicker, null)
 ));"
+`;
+
+exports[`babel-plugin-shaking-import should support array state options 1`] = `
+"'use strict';
+
+import forEachRight from 'lodash/forEachRight';
+import dropWhile from 'lodash/dropWhile';
+import 'antd/lib/button/style/css';
+import Button from 'antd/lib/button';
+import 'antd/lib/date-picker/style/css';
+import DatePicker from 'antd/lib/date-picker';
+import 'antd/lib/message/style/css';
+import message from 'antd/lib/message';
+
+
+forEachRight([1, 2], function (value) {
+  console.log(value);
+});
+
+dropWhile([1, 2, 3, 4], function (value) {
+  return value <= 3;
+});
+
+message.info('babel-plugin-shaking-import');
+
+ReactDOM.render(React.createElement(
+  'div',
+  null,
+  React.createElement(DatePicker, null),
+  React.createElement(
+    Button,
+    null,
+    'babel-plugin-shaking-import'
+  )
+));"
+`;
+
+exports[`babel-plugin-shaking-import should support libraryOverride cases 1`] = `
+"'use strict';
+
+import forEachRight from 'lodash/forEachRight';
+import dropWhile from 'lodash/dropWhile';
+
+
+forEachRight([1, 2], function (value) {
+  console.log(value);
+});
+
+dropWhile([1, 2, 3, 4], function (value) {
+  return value <= 3;
+});"
+`;
+
+exports[`babel-plugin-shaking-import should support libraryOverride cases 2`] = `
+"'use strict';
+
+import forEachRight from 'lodash-es/forEachRight';
+import dropWhile from 'lodash-es/dropWhile';
+
+
+forEachRight([1, 2], function (value) {
+  console.log(value);
+});
+
+dropWhile([1, 2, 3, 4], function (value) {
+  return value <= 3;
+});"
 `;
 
 exports[`babel-plugin-shaking-import should support lodash camel2camel style cases 1`] = `

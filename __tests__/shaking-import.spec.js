@@ -29,11 +29,73 @@ describe('babel-plugin-shaking-import', function () {
     expect(code).toMatchSnapshot();
   });
 
+  it('should support array state options', function () {
+    const fixture = path.resolve(__dirname, '../__fixture__/mixture.js');
+    const ShakingImportPlugin = [ShakingImport, [
+      {
+        libraryName: 'lodash',
+        libraryDirectory: '.'
+      },
+      {
+        libraryName: 'antd',
+        libraryDirectory: 'lib',
+        libraryStrategy: 'camel2dash',
+        style: 'css'
+      }
+    ]];
+    const caseBabelOptions = Object.assign({}, babelOptions, {
+      presets: ['react'],
+      plugins: [ShakingImportPlugin]
+    });
+    const { code } = babel.transformFileSync(fixture, caseBabelOptions);
+
+    expect(code).toMatchSnapshot();
+  });
+
+  it('should support adaptor libraryStrategy', function () {
+    const fixture = path.resolve(__dirname, '../__fixture__/lodash.js');
+    const ShakingImportPlugin = [ShakingImport, {
+      libraryName: 'lodash',
+      libraryDirectory: '.',
+      libraryStrategy: 'whatever'
+    }];
+    const caseBabelOptions = Object.assign({}, babelOptions, { plugins: [ShakingImportPlugin] });
+    const { code } = babel.transformFileSync(fixture, caseBabelOptions);
+
+    expect(code).toMatchSnapshot();
+  });
+
   it('should support lodash camel2camel style cases', function () {
     const fixture = path.resolve(__dirname, '../__fixture__/lodash.js');
     const ShakingImportPlugin = [ShakingImport, {
       libraryName: 'lodash',
       libraryDirectory: '.'
+    }];
+    const caseBabelOptions = Object.assign({}, babelOptions, { plugins: [ShakingImportPlugin] });
+    const { code } = babel.transformFileSync(fixture, caseBabelOptions);
+
+    expect(code).toMatchSnapshot();
+  });
+
+
+  it('should support libraryOverride cases', function () {
+    const fixture = path.resolve(__dirname, '../__fixture__/lodash.js');
+    const ShakingImportPlugin = [ShakingImport, {
+      libraryName: 'lodash',
+      libraryDirectory: '.'
+    }];
+    const caseBabelOptions = Object.assign({}, babelOptions, { plugins: [ShakingImportPlugin] });
+    const { code } = babel.transformFileSync(fixture, caseBabelOptions);
+
+    expect(code).toMatchSnapshot();
+  });
+
+  it('should support libraryOverride cases', function () {
+    const fixture = path.resolve(__dirname, '../__fixture__/lodash.js');
+    const ShakingImportPlugin = [ShakingImport, {
+      libraryName: 'lodash',
+      libraryOverride: 'lodash-es',
+      libraryDirectory: '.',
     }];
     const caseBabelOptions = Object.assign({}, babelOptions, { plugins: [ShakingImportPlugin] });
     const { code } = babel.transformFileSync(fixture, caseBabelOptions);
