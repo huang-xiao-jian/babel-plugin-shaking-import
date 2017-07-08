@@ -29,7 +29,7 @@ const DefaultOptions = {
   libraryDirectory: 'lib',
   libraryStrategy: 'camel2camel',
   libraryOverride: false,
-  style: false
+  libraryStyle: false
 };
 
 module.exports = function () {
@@ -65,7 +65,7 @@ module.exports = function () {
 function takeShakingImport(path, opts) {
   const specifiers = path.node.specifiers;
   const destination = _.defaults(opts, DefaultOptions);
-  const style = destination.style;
+  const libraryStyle = destination.libraryStyle;
   const libraryStrategyImplement = PresetStrategy.includes(destination.libraryStrategy) ?
     Reflect.get(Strategy, destination.libraryStrategy) :
     Reflect.get(Strategy, _.first(PresetStrategy));
@@ -78,11 +78,11 @@ function takeShakingImport(path, opts) {
       types.stringLiteral(destinationPath)
     );
 
-    if (style === true) {
+    if (libraryStyle === true) {
       path.insertBefore(types.importDeclaration([], types.stringLiteral(`${destinationPath}/style`)));
     }
 
-    if (style === 'css') {
+    if (libraryStyle === 'css') {
       path.insertBefore(types.importDeclaration([], types.stringLiteral(`${destinationPath}/style/css`)));
     }
 

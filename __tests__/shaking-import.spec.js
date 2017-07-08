@@ -40,7 +40,7 @@ describe('babel-plugin-shaking-import', function () {
         libraryName: 'antd',
         libraryDirectory: 'lib',
         libraryStrategy: 'camel2dash',
-        style: 'css'
+        libraryStyle: 'css'
       }
     ]];
     const caseBabelOptions = Object.assign({}, babelOptions, {
@@ -126,7 +126,7 @@ describe('babel-plugin-shaking-import', function () {
         libraryName: 'antd',
         libraryDirectory: 'lib',
         libraryStrategy: 'camel2dash',
-        style: true
+        libraryStyle: true
       }]]
     });
     const { code } = babel.transformFileSync(fixture, caseBabelOptions);
@@ -142,7 +142,7 @@ describe('babel-plugin-shaking-import', function () {
         libraryName: 'antd',
         libraryDirectory: 'lib',
         libraryStrategy: 'camel2dash',
-        style: 'css'
+        libraryStyle: 'css'
       }]]
     });
     const { code } = babel.transformFileSync(fixture, caseBabelOptions);
