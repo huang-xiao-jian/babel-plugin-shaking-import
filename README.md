@@ -21,7 +21,11 @@ Add babel plugin:
 ```json
 {
   "plugin": [
-    ["shaking-import": options]
+    ["shaking-import", {
+      "libraryName": "antd",
+      "libraryDirectory": "lib",
+      "style": true    
+    }]
   ]
 }
 ```
@@ -44,7 +48,7 @@ options can be an object of ShakingImportOptions, or an array of ShakingImportOp
 [
   {
     "libraryName": "antd",
-    "libraryDirectory": "lib",   // default: lib
+    "libraryDirectory": "lib",
     "style": true
   },
   {
@@ -52,8 +56,8 @@ options can be an object of ShakingImportOptions, or an array of ShakingImportOp
     "libraryDirectory": "component",
   },
   {
-    libraryName: 'lodash',
-    libraryDirectory: '.'
+    "libraryName": "lodash",
+    "libraryDirectory": "."
   }
 ]
 ```
