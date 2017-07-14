@@ -9,9 +9,9 @@
  * @property {string} libraryName
  * @property {string} libraryDirectory
  * @property {boolean} libraryNameImport - whether import namespace specifier
- * @property {string} libraryStrategy - camel2camel, camel2dash, camel2underline
+ * @property {string} libraryStrategy - preserve, camel2dash, camel2underline
  * @property {string|boolean} libraryOverride - replace module name in rare condition, like lodash within jest while lodash-es within rollup
- * @property {string|boolean} style
+ * @property {string|boolean} libraryStyle
  */
 
 'use strict';
