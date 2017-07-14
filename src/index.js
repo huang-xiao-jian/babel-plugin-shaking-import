@@ -8,6 +8,7 @@
  *
  * @property {string} libraryName
  * @property {string} libraryDirectory
+ * @property {boolean} libraryNameImport - whether import namespace specifier
  * @property {string} libraryStrategy - camel2camel, camel2dash, camel2underline
  * @property {string|boolean} libraryOverride - replace module name in rare condition, like lodash within jest while lodash-es within rollup
  * @property {string|boolean} style
@@ -22,12 +23,13 @@ const assert = require('assert');
 const _ = require('lodash');
 
 // Strategy
-const PresetStrategy = ['camel2camel', 'camel2dash', 'camel2underline'];
+const PresetStrategy = ['preserve', 'camel2dash', 'camel2underline'];
 const Strategy = require('./strategy');
 const Radar = require('./radar');
 const DefaultOptions = {
   libraryDirectory: 'lib',
   libraryStrategy: 'camel2camel',
+  libraryNameImport: false,
   libraryOverride: false,
   libraryStyle: false
 };
@@ -74,7 +76,7 @@ function takeShakingImport(path, opts) {
     let libraryName = (opts.libraryOverride && _.isString(opts.libraryOverride)) ? opts.libraryOverride : opts.libraryName;
     let destinationPath = nativePath.join(libraryName, opts.libraryDirectory, libraryStrategyImplement(specifier.imported.name));
     let declaration = types.importDeclaration(
-      [types.importDefaultSpecifier(specifier.local)],
+      [opts.libraryNameImport ? types.importSpecifier(specifier.local, specifier.imported) : types.importDefaultSpecifier(specifier.local)],
       types.stringLiteral(destinationPath)
     );
 

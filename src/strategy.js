@@ -4,7 +4,7 @@
  */
 'use strict';
 
-function camel2camel(name) {
+function preserve(name) {
   return name;
 }
 
@@ -23,7 +23,7 @@ function camel2underline(name) {
 }
 
 module.exports = {
-  camel2camel,
+  preserve,
   camel2dash,
   camel2underline
 };
