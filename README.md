@@ -7,6 +7,7 @@
 Modular import plugin for babel, compatible with antd, antd-mobile, lodash, and so on.
 
 ## Changelog
++ `ShakingImportOptions` add property `libraryNameImport`
 + `ShakingImportOptions` property `style` transform into `libraryStyle`
 
 ## Usage
