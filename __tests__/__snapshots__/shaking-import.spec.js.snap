@@ -197,3 +197,20 @@ dropWhile([1, 2, 3, 4], function (value) {
   return value <= 3;
 });"
 `;
+
+exports[`babel-plugin-shaking-import should support rxjs preserve cases 1`] = `
+"import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
+
+
+// Normal import
+import 'rxjs/observable/interval';
+import 'rxjs/observable/zip';
+
+const trigger$ = Reflect.construct(Subject, []);
+const timer$ = Observable.interval(1000);
+
+Observable.zip(trigger$, timer$).subscribe(value => {
+  console.log(value);
+});"
+`;

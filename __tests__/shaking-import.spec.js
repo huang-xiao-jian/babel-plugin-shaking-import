@@ -164,4 +164,20 @@ describe('babel-plugin-shaking-import', function () {
 
     expect(code).toMatchSnapshot();
   });
+
+  it('should support rxjs preserve cases', function () {
+    const fixture = path.resolve(__dirname, '../__fixture__/rxjs.js');
+    const caseBabelOptions = Object.assign({}, babelOptions, {
+      presets: [],
+      plugins: [[ShakingImport, {
+        libraryName: 'rxjs',
+        libraryDirectory: '.',
+        libraryStrategy: 'preserve',
+        libraryNameImport: true
+      }]]
+    });
+    const { code } = babel.transformFileSync(fixture, caseBabelOptions);
+
+    expect(code).toMatchSnapshot();
+  });
 });

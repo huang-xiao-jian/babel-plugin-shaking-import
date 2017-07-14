@@ -9,7 +9,7 @@ const Strategy = require('../src/strategy');
 
 describe('babel-plugin-shaking-import strategy', function () {
   it('should implement camel2camel', function () {
-    expect(Strategy.camel2camel('dropRightWhile')).toEqual('dropRightWhile');
+    expect(Strategy.preserve('dropRightWhile')).toEqual('dropRightWhile');
   });
 
   it('should implement camel2dash', function () {
