@@ -1,6 +1,6 @@
 {
   "name": "babel-plugin-shaking-import",
-  "version": "0.2.0",
+  "version": "0.4.0",
   "description": "Modular import plugin for babel.",
   "main": "src/index.js",
   "scripts": {
