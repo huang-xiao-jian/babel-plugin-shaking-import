@@ -1,59 +1,28 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`babel-plugin-shaking-import should ignore default import declaration 1`] = `
-"'use strict';
+exports[`babel-plugin-shaking-import antd flavor: antd flavor 1`] = `
 
-import _, { forEachRight } from 'lodash';
+import { Button, DatePicker, message } from 'antd';
 
-forEachRight([1, 2], function (value) {
-  console.log(value);
-});
+message.info('babel-plugin-shaking-import');
 
-_.dropWhile([1, 2, 3, 4], function (value) {
-  return value <= 3;
-});"
-`;
-
-exports[`babel-plugin-shaking-import should support adaptor libraryStrategy 1`] = `
-"'use strict';
-
-import forEachRight from 'lodash/forEachRight';
-import dropWhile from 'lodash/dropWhile';
-
-
-forEachRight([1, 2], function (value) {
-  console.log(value);
-});
-
-dropWhile([1, 2, 3, 4], function (value) {
-  return value <= 3;
-});"
-`;
-
-exports[`babel-plugin-shaking-import should support antd camel2dash style cases 1`] = `
-"'use strict';
+      ↓ ↓ ↓ ↓ ↓ ↓
 
 import Button from 'antd/lib/button';
 import DatePicker from 'antd/lib/date-picker';
 import message from 'antd/lib/message';
+message.info('babel-plugin-shaking-import');
 
+
+`;
+
+exports[`babel-plugin-shaking-import antd flavor: antd flavor 2`] = `
+
+import { Button, DatePicker, message } from 'antd';
 
 message.info('babel-plugin-shaking-import');
 
-ReactDOM.render(React.createElement(
-  'div',
-  null,
-  React.createElement(DatePicker, null),
-  React.createElement(
-    Button,
-    null,
-    'babel-plugin-shaking-import'
-  )
-));"
-`;
-
-exports[`babel-plugin-shaking-import should support antd camel2dash style cases 2`] = `
-"'use strict';
+      ↓ ↓ ↓ ↓ ↓ ↓
 
 import 'antd/lib/button/style';
 import Button from 'antd/lib/button';
@@ -61,24 +30,18 @@ import 'antd/lib/date-picker/style';
 import DatePicker from 'antd/lib/date-picker';
 import 'antd/lib/message/style';
 import message from 'antd/lib/message';
+message.info('babel-plugin-shaking-import');
 
+
+`;
+
+exports[`babel-plugin-shaking-import antd flavor: antd flavor 3`] = `
+
+import { Button, DatePicker, message } from 'antd';
 
 message.info('babel-plugin-shaking-import');
 
-ReactDOM.render(React.createElement(
-  'div',
-  null,
-  React.createElement(DatePicker, null),
-  React.createElement(
-    Button,
-    null,
-    'babel-plugin-shaking-import'
-  )
-));"
-`;
-
-exports[`babel-plugin-shaking-import should support antd camel2dash style cases 3`] = `
-"'use strict';
+      ↓ ↓ ↓ ↓ ↓ ↓
 
 import 'antd/lib/button/style/css';
 import Button from 'antd/lib/button';
@@ -86,131 +49,53 @@ import 'antd/lib/date-picker/style/css';
 import DatePicker from 'antd/lib/date-picker';
 import 'antd/lib/message/style/css';
 import message from 'antd/lib/message';
-
-
 message.info('babel-plugin-shaking-import');
 
-ReactDOM.render(React.createElement(
-  'div',
-  null,
-  React.createElement(DatePicker, null),
-  React.createElement(
-    Button,
-    null,
-    'babel-plugin-shaking-import'
-  )
-));"
+
 `;
 
-exports[`babel-plugin-shaking-import should support antd camel2underline style cases 1`] = `
-"'use strict';
+exports[`babel-plugin-shaking-import lodash flavor: lodash flavor 1`] = `
+
+import { forEachRight, dropWhile } from 'lodash';
+
+      ↓ ↓ ↓ ↓ ↓ ↓
+
+import forEachRight from 'lodash/forEachRight';
+import dropWhile from 'lodash/dropWhile';
+
+
+`;
+
+exports[`babel-plugin-shaking-import react-toolbox flavor: react-toolbox flavor 1`] = `
+
+import { TimePicker } from 'react-toolbox';
+
+      ↓ ↓ ↓ ↓ ↓ ↓
 
 import TimePicker from 'react-toolbox/lib/time_picker';
 
 
-ReactDOM.render(React.createElement(
-  'div',
-  null,
-  React.createElement(TimePicker, null)
-));"
 `;
 
-exports[`babel-plugin-shaking-import should support array state options 1`] = `
-"'use strict';
+exports[`babel-plugin-shaking-import rxjs flavor: rxjs flavor 1`] = `
 
-import forEachRight from 'lodash/forEachRight';
-import dropWhile from 'lodash/dropWhile';
-import 'antd/lib/button/style/css';
-import Button from 'antd/lib/button';
-import 'antd/lib/date-picker/style/css';
-import DatePicker from 'antd/lib/date-picker';
-import 'antd/lib/message/style/css';
-import message from 'antd/lib/message';
+import { Observable, Subject } from 'rxjs';
 
+      ↓ ↓ ↓ ↓ ↓ ↓
 
-forEachRight([1, 2], function (value) {
-  console.log(value);
-});
-
-dropWhile([1, 2, 3, 4], function (value) {
-  return value <= 3;
-});
-
-message.info('babel-plugin-shaking-import');
-
-ReactDOM.render(React.createElement(
-  'div',
-  null,
-  React.createElement(DatePicker, null),
-  React.createElement(
-    Button,
-    null,
-    'babel-plugin-shaking-import'
-  )
-));"
-`;
-
-exports[`babel-plugin-shaking-import should support libraryOverride cases 1`] = `
-"'use strict';
-
-import forEachRight from 'lodash/forEachRight';
-import dropWhile from 'lodash/dropWhile';
-
-
-forEachRight([1, 2], function (value) {
-  console.log(value);
-});
-
-dropWhile([1, 2, 3, 4], function (value) {
-  return value <= 3;
-});"
-`;
-
-exports[`babel-plugin-shaking-import should support libraryOverride cases 2`] = `
-"'use strict';
-
-import forEachRight from 'lodash-es/forEachRight';
-import dropWhile from 'lodash-es/dropWhile';
-
-
-forEachRight([1, 2], function (value) {
-  console.log(value);
-});
-
-dropWhile([1, 2, 3, 4], function (value) {
-  return value <= 3;
-});"
-`;
-
-exports[`babel-plugin-shaking-import should support lodash camel2camel style cases 1`] = `
-"'use strict';
-
-import forEachRight from 'lodash/forEachRight';
-import dropWhile from 'lodash/dropWhile';
-
-
-forEachRight([1, 2], function (value) {
-  console.log(value);
-});
-
-dropWhile([1, 2, 3, 4], function (value) {
-  return value <= 3;
-});"
-`;
-
-exports[`babel-plugin-shaking-import should support rxjs preserve cases 1`] = `
-"import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 
 
-// Normal import
-import 'rxjs/observable/interval';
-import 'rxjs/observable/zip';
+`;
 
-const trigger$ = Reflect.construct(Subject, []);
-const timer$ = Observable.interval(1000);
+exports[`babel-plugin-shaking-import skip import default declaration: skip import default declaration 1`] = `
 
-Observable.zip(trigger$, timer$).subscribe(value => {
-  console.log(value);
-});"
+import _, { forEachRight, dropWhile } from 'lodash';
+
+      ↓ ↓ ↓ ↓ ↓ ↓
+
+import _, { forEachRight, dropWhile } from 'lodash';
+
+
 `;

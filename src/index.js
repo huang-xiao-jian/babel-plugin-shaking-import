@@ -1,6 +1,6 @@
 /**
- * @description - babel-plugin-shaking-import
- * @author - bornkiller <hjj491229492@hotmail.com>
+ * @description - Modular import plugin for babel
+ * @author - huang.jian <hjj491229492@hotmail.com>
  */
 
 /**
@@ -8,88 +8,110 @@
  *
  * @property {string} libraryName
  * @property {string} libraryDirectory
- * @property {boolean} libraryNameImport - whether import namespace specifier
  * @property {string} libraryStrategy - preserve, camel2dash, camel2underline
- * @property {string|boolean} libraryOverride - replace module name in rare condition, like lodash within jest while lodash-es within rollup
+ * @property {boolean} libraryNameImport - whether import namespace specifier
  * @property {string|boolean} libraryStyle
  */
 
-'use strict';
-
-// External dependency
+// packages
 const nativePath = require('path');
-const types = require('babel-types');
 const assert = require('assert');
-const _ = require('lodash');
+const types = require('@babel/types');
 
-// Strategy
-const PresetStrategy = ['preserve', 'camel2dash', 'camel2underline'];
-const Strategy = require('./strategy');
-const Radar = require('./radar');
-const DefaultOptions = {
+// internal
+const strategy = require('./strategy');
+const defaultShakingOptions = {
   libraryDirectory: 'lib',
-  libraryStrategy: 'camel2camel',
+  libraryStrategy: 'preserve',
   libraryNameImport: false,
-  libraryOverride: false,
-  libraryStyle: false
+  libraryStyle: false,
 };
 
-module.exports = function () {
+// scope
+/**
+ * @description - skip import default declaration
+ */
+function shouldTakeShakingImport(specifiers) {
+  return !specifiers.some((specifier) =>
+    types.isImportDefaultSpecifier(specifier)
+  );
+}
+
+/**
+ * @description - operate import declaration split
+ */
+function takeShakingImport(path, opts) {
+  const specifiers = path.node.specifiers;
+  // const destination = _.defaults(opts, DefaultOptions);
+  const destination = { ...defaultShakingOptions, ...opts };
+  const libraryStyle = destination.libraryStyle;
+  const libraryStrategyImplement =
+    Reflect.get(strategy, destination.libraryStrategy) || strategy.preserve;
+
+  specifiers.forEach((specifier) => {
+    const { libraryName, libraryDirectory } = opts;
+    const destinationPath = nativePath.join(
+      libraryName,
+      libraryDirectory,
+      libraryStrategyImplement(specifier.imported.name)
+    );
+
+    // import additional stylesheets
+    if (libraryStyle === true) {
+      path.insertBefore(
+        types.importDeclaration(
+          [],
+          types.stringLiteral(`${destinationPath}/style`)
+        )
+      );
+    }
+
+    if (libraryStyle === 'css') {
+      path.insertBefore(
+        types.importDeclaration(
+          [],
+          types.stringLiteral(`${destinationPath}/style/css`)
+        )
+      );
+    }
+
+    // import shaking modules
+    path.insertBefore(
+      types.importDeclaration(
+        [
+          opts.libraryNameImport
+            ? types.importSpecifier(specifier.local, specifier.imported)
+            : types.importDefaultSpecifier(specifier.local),
+        ],
+        types.stringLiteral(destinationPath)
+      )
+    );
+  });
+
+  // remove original import declaration
+  path.remove();
+}
+
+module.exports = function shakingImportPlugin() {
   return {
     visitor: {
       ImportDeclaration: {
         /**
          * @param {object} path - ImportDeclaration
-         * @param {ShakingImportOptions} state
+         * @param {{opts: ShakingImportOptions}} state
          */
         enter(path, state) {
-          const optsList = _.isPlainObject(state.opts) ? [state.opts] : state.opts;
+          assert(state.opts, 'ShakingImportOptions required');
+          assert(state.opts.libraryName, 'libraryName required');
 
-          optsList.forEach((opts) => assert(opts.libraryName, 'libraryName should be provided'));
-
-          const shakingImportList = optsList
-            .filter((opts) => opts.libraryName === path.node.source.value)
-            .filter(() => Radar.shouldTakeShakingImport(path.node.specifiers));
-
-          shakingImportList.forEach((opts) => takeShakingImport(path, opts));
-        }
-      }
-    }
+          if (state.opts.libraryName === path.node.source.value) {
+            // skip import default declaration
+            if (shouldTakeShakingImport(path.node.specifiers)) {
+              takeShakingImport(path, state.opts);
+            }
+          }
+        },
+      },
+    },
   };
 };
-
-/**
- * @description - operate import declaration split
- *
- * @param path
- * @param {ShakingImportOptions} opts
- */
-function takeShakingImport(path, opts) {
-  const specifiers = path.node.specifiers;
-  const destination = _.defaults(opts, DefaultOptions);
-  const libraryStyle = destination.libraryStyle;
-  const libraryStrategyImplement = PresetStrategy.includes(destination.libraryStrategy) ?
-    Reflect.get(Strategy, destination.libraryStrategy) :
-    Reflect.get(Strategy, _.first(PresetStrategy));
-
-  specifiers.forEach((specifier) => {
-    let libraryName = (opts.libraryOverride && _.isString(opts.libraryOverride)) ? opts.libraryOverride : opts.libraryName;
-    let destinationPath = nativePath.join(libraryName, opts.libraryDirectory, libraryStrategyImplement(specifier.imported.name));
-    let declaration = types.importDeclaration(
-      [opts.libraryNameImport ? types.importSpecifier(specifier.local, specifier.imported) : types.importDefaultSpecifier(specifier.local)],
-      types.stringLiteral(destinationPath)
-    );
-
-    if (libraryStyle === true) {
-      path.insertBefore(types.importDeclaration([], types.stringLiteral(`${destinationPath}/style`)));
-    }
-
-    if (libraryStyle === 'css') {
-      path.insertBefore(types.importDeclaration([], types.stringLiteral(`${destinationPath}/style/css`)));
-    }
-
-    path.insertBefore(declaration);
-  });
-
-  path.remove();
-}

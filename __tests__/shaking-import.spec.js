@@ -3,181 +3,96 @@
  * @author - huang.jian <hjj491229492@hotmail.com>
  */
 
-'use strict';
-
+// package
 const path = require('path');
-const babel = require('babel-core');
-const ShakingImport = require('../src');
+const tester = require('babel-plugin-tester');
 
-// fixture
-const babelOptions = {
-  presets: [],
-  plugins: [],
-  babelrc: false
-};
+// internal
+const shakingImportPlugin = require('../src');
 
-describe('babel-plugin-shaking-import', function () {
-  it('should ignore default import declaration', function () {
-    const fixture = path.resolve(__dirname, '../__fixture__/import-default.js');
-    const ShakingImportPlugin = [ShakingImport, {
-      libraryName: 'lodash',
-      libraryDirectory: '.'
-    }];
-    const caseBabelOptions = Object.assign({}, babelOptions, { plugins: [ShakingImportPlugin] });
-    const { code } = babel.transformFileSync(fixture, caseBabelOptions);
-
-    expect(code).toMatchSnapshot();
-  });
-
-  it('should support array state options', function () {
-    const fixture = path.resolve(__dirname, '../__fixture__/mixture.js');
-    const ShakingImportPlugin = [ShakingImport, [
-      {
-        libraryName: 'lodash',
-        libraryDirectory: '.'
+tester.default({
+  plugin: shakingImportPlugin,
+  pluginName: 'babel-plugin-shaking-import',
+  snapshot: true,
+  tests: [
+    /***********************************************************************/
+    /* antd suits */
+    /***********************************************************************/
+    {
+      title: 'antd flavor',
+      fixture: path.join(__dirname, '__fixtures__', 'antd.js'),
+      pluginOptions: {
+        libraryName: 'antd',
+        libraryDirectory: 'lib',
+        libraryStrategy: 'camel2dash',
       },
-      {
+    },
+    {
+      title: 'antd flavor',
+      fixture: path.join(__dirname, '__fixtures__', 'antd.js'),
+      pluginOptions: {
         libraryName: 'antd',
         libraryDirectory: 'lib',
         libraryStrategy: 'camel2dash',
-        libraryStyle: 'css'
-      }
-    ]];
-    const caseBabelOptions = Object.assign({}, babelOptions, {
-      presets: ['react'],
-      plugins: [ShakingImportPlugin]
-    });
-    const { code } = babel.transformFileSync(fixture, caseBabelOptions);
-
-    expect(code).toMatchSnapshot();
-  });
-
-  it('should support adaptor libraryStrategy', function () {
-    const fixture = path.resolve(__dirname, '../__fixture__/lodash.js');
-    const ShakingImportPlugin = [ShakingImport, {
-      libraryName: 'lodash',
-      libraryDirectory: '.',
-      libraryStrategy: 'whatever'
-    }];
-    const caseBabelOptions = Object.assign({}, babelOptions, { plugins: [ShakingImportPlugin] });
-    const { code } = babel.transformFileSync(fixture, caseBabelOptions);
-
-    expect(code).toMatchSnapshot();
-  });
-
-  it('should support lodash camel2camel style cases', function () {
-    const fixture = path.resolve(__dirname, '../__fixture__/lodash.js');
-    const ShakingImportPlugin = [ShakingImport, {
-      libraryName: 'lodash',
-      libraryDirectory: '.'
-    }];
-    const caseBabelOptions = Object.assign({}, babelOptions, { plugins: [ShakingImportPlugin] });
-    const { code } = babel.transformFileSync(fixture, caseBabelOptions);
-
-    expect(code).toMatchSnapshot();
-  });
-
-
-  it('should support libraryOverride cases', function () {
-    const fixture = path.resolve(__dirname, '../__fixture__/lodash.js');
-    const ShakingImportPlugin = [ShakingImport, {
-      libraryName: 'lodash',
-      libraryDirectory: '.'
-    }];
-    const caseBabelOptions = Object.assign({}, babelOptions, { plugins: [ShakingImportPlugin] });
-    const { code } = babel.transformFileSync(fixture, caseBabelOptions);
-
-    expect(code).toMatchSnapshot();
-  });
-
-  it('should support libraryOverride cases', function () {
-    const fixture = path.resolve(__dirname, '../__fixture__/lodash.js');
-    const ShakingImportPlugin = [ShakingImport, {
-      libraryName: 'lodash',
-      libraryOverride: 'lodash-es',
-      libraryDirectory: '.',
-    }];
-    const caseBabelOptions = Object.assign({}, babelOptions, { plugins: [ShakingImportPlugin] });
-    const { code } = babel.transformFileSync(fixture, caseBabelOptions);
-
-    expect(code).toMatchSnapshot();
-  });
-
-  it('should support antd camel2dash style cases', function () {
-    const fixture = path.resolve(__dirname, '../__fixture__/antd.js');
-    const caseBabelOptions = Object.assign({}, babelOptions, {
-      presets: ['react'],
-      plugins: [[ShakingImport, {
-        libraryName: 'antd',
-        libraryDirectory: 'lib',
-        libraryStrategy: 'camel2dash'
-      }]]
-    });
-    const { code } = babel.transformFileSync(fixture, caseBabelOptions);
-
-    expect(code).toMatchSnapshot();
-  });
-
-  it('should support antd camel2dash style cases', function () {
-    const fixture = path.resolve(__dirname, '../__fixture__/antd.js');
-    const caseBabelOptions = Object.assign({}, babelOptions, {
-      presets: ['react'],
-      plugins: [[ShakingImport, {
+        libraryStyle: true,
+      },
+    },
+    {
+      title: 'antd flavor',
+      fixture: path.join(__dirname, '__fixtures__', 'antd.js'),
+      pluginOptions: {
         libraryName: 'antd',
         libraryDirectory: 'lib',
         libraryStrategy: 'camel2dash',
-        libraryStyle: true
-      }]]
-    });
-    const { code } = babel.transformFileSync(fixture, caseBabelOptions);
+        libraryStyle: 'css',
+      },
+    },
+    /***********************************************************************/
+    /* lodash flavor */
+    /***********************************************************************/
+    {
+      title: 'lodash flavor',
+      fixture: path.join(__dirname, '__fixtures__', 'lodash.js'),
+      pluginOptions: {
+        libraryName: 'lodash',
+        libraryDirectory: '.',
+      },
+    },
+    /***********************************************************************/
+    /* react-toolbox flavor */
+    /***********************************************************************/
 
-    expect(code).toMatchSnapshot();
-  });
-
-  it('should support antd camel2dash style cases', function () {
-    const fixture = path.resolve(__dirname, '../__fixture__/antd.js');
-    const caseBabelOptions = Object.assign({}, babelOptions, {
-      presets: ['react'],
-      plugins: [[ShakingImport, {
-        libraryName: 'antd',
-        libraryDirectory: 'lib',
-        libraryStrategy: 'camel2dash',
-        libraryStyle: 'css'
-      }]]
-    });
-    const { code } = babel.transformFileSync(fixture, caseBabelOptions);
-
-    expect(code).toMatchSnapshot();
-  });
-
-  it('should support antd camel2underline style cases', function () {
-    const fixture = path.resolve(__dirname, '../__fixture__/react-toolbox.js');
-    const caseBabelOptions = Object.assign({}, babelOptions, {
-      presets: ['react'],
-      plugins: [[ShakingImport, {
+    {
+      title: 'react-toolbox flavor',
+      fixture: path.join(__dirname, '__fixtures__', 'react-toolbox.js'),
+      pluginOptions: {
         libraryName: 'react-toolbox',
         libraryDirectory: 'lib',
-        libraryStrategy: 'camel2underline'
-      }]]
-    });
-    const { code } = babel.transformFileSync(fixture, caseBabelOptions);
-
-    expect(code).toMatchSnapshot();
-  });
-
-  it('should support rxjs preserve cases', function () {
-    const fixture = path.resolve(__dirname, '../__fixture__/rxjs.js');
-    const caseBabelOptions = Object.assign({}, babelOptions, {
-      presets: [],
-      plugins: [[ShakingImport, {
+        libraryStrategy: 'camel2underline',
+      },
+    },
+    /***********************************************************************/
+    /* rxjs flavor */
+    /***********************************************************************/
+    {
+      title: 'rxjs flavor',
+      fixture: path.join(__dirname, '__fixtures__', 'rxjs.js'),
+      pluginOptions: {
         libraryName: 'rxjs',
         libraryDirectory: '.',
-        libraryStrategy: 'preserve',
-        libraryNameImport: true
-      }]]
-    });
-    const { code } = babel.transformFileSync(fixture, caseBabelOptions);
-
-    expect(code).toMatchSnapshot();
-  });
+        libraryNameImport: true,
+      },
+    },
+    /***********************************************************************/
+    /* skip import default declaration */
+    /***********************************************************************/
+    {
+      title: 'skip import default declaration',
+      fixture: path.join(__dirname, '__fixtures__', 'skip.js'),
+      pluginOptions: {
+        libraryName: 'lodash',
+        libraryDirectory: '.',
+      },
+    },
+  ],
 });

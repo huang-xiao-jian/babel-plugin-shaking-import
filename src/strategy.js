@@ -2,7 +2,6 @@
  * @description - sub-module location strategy
  * @author - huang.jian <hjj491229492@hotmail.com>
  */
-'use strict';
 
 function preserve(name) {
   return name;
@@ -25,5 +24,5 @@ function camel2underline(name) {
 module.exports = {
   preserve,
   camel2dash,
-  camel2underline
+  camel2underline,
 };
