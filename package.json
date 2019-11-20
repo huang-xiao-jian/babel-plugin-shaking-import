@@ -3,35 +3,57 @@
   "version": "0.4.0",
   "description": "Modular import plugin for babel.",
   "main": "src/index.js",
+  "engines": {
+    "node": ">=10"
+  },
   "scripts": {
     "test": "jest --config jest.config.js --coverage",
     "test:watch": "jest --config jest.config.js --watch"
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/bornkiller/babel-plugin-shaking-import.git"
+    "url": "git+ssh://git@github.com/huang-xiao-jian/babel-plugin-shaking-import.git"
   },
   "keywords": [
     "babel",
     "plugin"
   ],
-  "author": "bornkiller <hjj491229492@hotmail.com>",
+  "author": "huang-xiao-jian <hjj491229492@hotmail.com>",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/bornkiller/babel-plugin-shaking-import/issues"
+    "url": "https://github.com/huang-xiao-jian/babel-plugin-shaking-import/issues"
   },
-  "homepage": "https://github.com/bornkiller/babel-plugin-shaking-import#README",
+  "homepage": "https://github.com/huang-xiao-jian/babel-plugin-shaking-import#README",
   "devDependencies": {
-    "antd": "^2.12.0",
-    "babel-core": "^6.25.0",
-    "babel-preset-react": "^6.24.1",
+    "@babel/core": "^7.0.0",
+    "@babel/preset-react": "^7.0.0",
+    "@commitlint/cli": "^8.2.0",
+    "@commitlint/config-conventional": "^8.2.0",
+    "@types/jest": "^24.0.23",
+    "babel-core": "^7.0.0-bridge.0",
+    "babel-jest": "^23.4.2",
+    "babel-plugin-tester": "^8.0.0",
+    "commitizen": "^4.0.3",
+    "cz-conventional-changelog": "^3.0.2",
     "eslint": "^4.0.0",
-    "jest": "^20.0.4",
-    "lodash": "^4.17.4",
-    "react": "^15.6.1",
-    "rxjs": "^5.4.2"
+    "husky": "^3.1.0",
+    "jest": "^24.9.0",
+    "prettier": "^1.19.1",
+    "pretty-quick": "^2.0.1"
   },
   "dependencies": {
-    "babel-types": "^6.25.0"
+    "@babel/types": "^7.7.2"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged",
+      "prepare-commit-msg": "exec < /dev/tty && git cz --hook",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
   }
 }
