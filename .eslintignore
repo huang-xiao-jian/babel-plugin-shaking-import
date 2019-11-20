@@ -39,6 +39,5 @@ jspm_packages
 .node_repl_history
 
 # Test
-test
-__fixture__
+__fixtures__
 
