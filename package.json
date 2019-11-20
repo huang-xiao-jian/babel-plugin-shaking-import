@@ -1,6 +1,6 @@
 {
   "name": "babel-plugin-shaking-import",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "Modular import plugin for babel.",
   "main": "src/index.js",
   "engines": {
@@ -47,7 +47,6 @@
   "husky": {
     "hooks": {
       "pre-commit": "pretty-quick --staged",
-      "prepare-commit-msg": "exec < /dev/tty && git cz --hook",
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
   },
